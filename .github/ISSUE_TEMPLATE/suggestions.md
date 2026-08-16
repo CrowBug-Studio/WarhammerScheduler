@@ -1,9 +1,9 @@
 ---
-name: "[SUGGESTION]"
+name: Suggestions
 about: Suggest an idea for this project
-title: Suggestions
+title: "[SUGGESTION]"
 labels: Low Priority, Suggestions
-assignees: CrowBug-Studios
+assignees: SandwichthePilot
 
 ---
 

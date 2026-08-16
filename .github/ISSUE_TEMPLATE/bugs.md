@@ -1,9 +1,9 @@
 ---
-name: "[BUG]"
+name: Bugs
 about: Create a report to help us improve
-title: Bug
+title: "[BUG]"
 labels: Bug, Low Priority, Suggestions
-assignees: CrowBug-Studios
+assignees: SandwichthePilot
 
 ---
 
