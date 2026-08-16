@@ -1,8 +1,8 @@
 ---
-name: Bug report
+name: "[BUG]"
 about: Create a report to help us improve
 title: Bug
-labels: Bug, Low Priority
+labels: Bug, Low Priority, Suggestions
 assignees: CrowBug-Studios
 
 ---

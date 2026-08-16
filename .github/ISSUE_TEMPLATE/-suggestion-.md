@@ -1,5 +1,5 @@
 ---
-name: Feature request
+name: "[SUGGESTION]"
 about: Suggest an idea for this project
 title: Suggestions
 labels: Low Priority, Suggestions
