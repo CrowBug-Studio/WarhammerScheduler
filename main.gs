@@ -3,6 +3,16 @@ const today = new Date(); //Get Today's Date
 const currentDay = today.getDate(); //Get the current day (1-31) from "today" constant
 const currentMonth = today.getMonth(); //Get the current month (0-11) from "today" constant
 const currentYear = today.getFullYear(); //Get the current year from "today" constant
+const botToken = ""; //Hidden for security
+const url = ""; //Hidden for security
+
+var eventDetailsObject = { //An object to store data about the event
+  Name: "",
+  Description: "",
+  Location: "",
+  Date: "",
+  Username: ""
+};
 
 
 function create_keys(dateEvent) { //1
@@ -56,18 +66,38 @@ function form_submission(form) { //2
 
     if (title == "Discord Username") {
       var discordUsername = answer;
+      eventDetailsObject.Username = answer;
     }
 
     if (title === "Event Name") {
       var eventName = answer;
+      eventDetailsObject.Name = answer;
     }
 
     if (title === "Event Description") {
       var eventDescription = answer;
+      eventDetailsObject.Description = answer;
     }
 
-    if (title === "Location (ex: Discord Server)") {
-      var location = answer;
+    //Location Section
+    if (title === "Online or In-Person") {
+      var eventLocationType = answer;
+    }
+
+    if (title === "Discord Chat Id (Use the link above for common options)") {
+      var onlineChannelID = answer;
+      eventDetailsObject.Location = answer;
+    }
+
+    if (title === "Location") {
+      var localLocation = answer;
+      eventDetailsObject.Location = answer;
+    }
+
+    if (eventLocationType === "Online") {
+      location = "Discord"; //Placeholder to be changed later
+    } else if (eventLocationType === "In Person") {
+      location = eventDetailsObject.Location;
     }
 
     //Date Section
@@ -176,6 +206,8 @@ function form_submission(form) { //2
 
   console.log("Fields checked [2]");
   eventDate = new Date(year, month, day, hours, minutes); //Sets the gathered variables into one date
+  shortDate = new Date(month, day);
+  eventDetailsObject.Date = shortDate + timeOnly24;
   specificKey = create_keys(eventDate); //Generates the key
   upload_calendar(eventName, eventDescription, location, eventDate, specificKey, discordUsername);
 }
@@ -195,4 +227,32 @@ function upload_calendar(evntName, evntDescription, evntLocation, evntDate, key,
   event.setTag('username', username);
 
   console.info(event.getTag('key'), event.getTag('username'), "[3]");
+
+  send_message();
+}
+
+
+function build_string(eventObject) {
+  var output = `# ${eventObject.Name} \n**${eventObject.Description}** \nHosted on ${eventObject.Date} by ${eventObject.Username}`;
+
+  return output;
+}
+
+
+function send_message(text = build_string(eventDetailsObject), channel = "1539452822628597780") { //6
+  const payload = {
+    "channelId": channel,
+    "content": text
+  };
+  console.log("2");
+
+  const options = {
+    "method": "post",
+    "contentType": "application/json",
+    "payload": JSON.stringify(payload)
+  };
+  console.log("3");
+
+  const response = UrlFetchApp.fetch(url, options);
+  console.log(response.getContentText());
 }
