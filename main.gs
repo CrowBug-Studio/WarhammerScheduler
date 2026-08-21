@@ -3,7 +3,6 @@ const today = new Date(); //Get Today's Date
 const currentDay = today.getDate(); //Get the current day (1-31) from "today" constant
 const currentMonth = today.getMonth(); //Get the current month (0-11) from "today" constant
 const currentYear = today.getFullYear(); //Get the current year from "today" constant
-const botToken = ""; //Hidden for security
 const url = ""; //Hidden for security
 
 var eventDetailsObject = { //An object to store data about the event
@@ -66,7 +65,31 @@ function form_submission(form) { //2
 
     if (title == "Discord Username") {
       var discordUsername = answer;
-      eventDetailsObject.Username = answer;
+      switch (discordUsername) { //check some default usernames for better compatibility
+        case "sandwichthepilot": //Nathan
+          eventDetailsObject.Username = "776934045531504660";
+          break;
+        case "zombieboy2010._77531": //Gavin
+          eventDetailsObject.Username = "1137436970868539494";
+          break;
+        case "traumatized_individual": //Seth
+          eventDetailsObject.Username = "1357806417435820092";
+          break;
+        case "rowlet0966": //Ben
+          eventDetailsObject.Username = "1528859249609019544";
+          break;
+        case "voyager9696": //Aiden
+          eventDetailsObject.Username = "799440285926293534";
+          break;
+        case "fieldmarshalluke_42402": //Luke
+          eventDetailsObject.Username = "1235319817897246794";
+          break;
+        case "dannyplayz_.": //Danny
+          eventDetailsObject.Username = "1344875281894080642";
+          break;
+        default:
+          eventDetailsObject.Username = discordUsername;
+      }
     }
 
     if (title === "Event Name") {
@@ -186,7 +209,7 @@ function form_submission(form) { //2
         //If the month is January, March, May, July, August, October, or December and the user inputs more than 31, 31 is subtracted and 1 month is advanced (July 48 --> August 17)
       }
 
-      if ((year == currentYear && month == currentMonth) && day < currentDay) {
+      if ((year <= currentYear && month <= currentMonth) && day < currentDay) {
         day = currentDay;
         //If the day is in the past set it to be the currentDay
       } else if (year == currentYear && month < currentMonth) {
@@ -205,15 +228,15 @@ function form_submission(form) { //2
   }
 
   console.log("Fields checked [2]");
-  eventDate = new Date(year, month, day, hours, minutes); //Sets the gathered variables into one date
-  shortDate = new Date(month, day);
-  eventDetailsObject.Date = shortDate + timeOnly24;
-  specificKey = create_keys(eventDate); //Generates the key
-  upload_calendar(eventName, eventDescription, location, eventDate, specificKey, discordUsername);
+  var eventDate = new Date(year, month, day, hours, minutes); //Sets the gathered variables into one date
+  var time = `${day}/${month+1}/${year} at ` + `${hours}:${minutes}`;
+  eventDetailsObject.Date = time;
+  var specificKey = create_keys(eventDate); //Generates the key
+  upload_calendar(eventName, eventDescription, location, eventDate, specificKey, discordUsername, eventLocationType);
 }
 
 
-function upload_calendar(evntName, evntDescription, evntLocation, evntDate, key, username) { //3
+function upload_calendar(evntName, evntDescription, evntLocation, evntDate, key, username, eventLocationType) { //3
   console.log("Adding event [3]")
   var options = { //Options for the event
     location: evntLocation,
@@ -228,18 +251,22 @@ function upload_calendar(evntName, evntDescription, evntLocation, evntDate, key,
 
   console.info(event.getTag('key'), event.getTag('username'), "[3]");
 
-  send_message();
+  if (eventLocationType === "Online") {
+    send_message(eventDetailsObject.Location);
+  } else {
+    send_message()
+  }
 }
 
 
 function build_string(eventObject) {
-  var output = `# ${eventObject.Name} \n**${eventObject.Description}** \nHosted on ${eventObject.Date} by ${eventObject.Username}`;
+  var output = `# ${eventObject.Name} \n**${eventObject.Description}** \nHosted on ${eventObject.Date} by <@${eventObject.Username}>`;
 
   return output;
 }
 
 
-function send_message(text = build_string(eventDetailsObject), channel = "1539452822628597780") { //6
+function send_message(channel = "1539452822628597780", text = build_string(eventDetailsObject)) { //6
   const payload = {
     "channelId": channel,
     "content": text
