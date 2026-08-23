@@ -4,6 +4,9 @@ const currentDay = today.getDate(); //Get the current day (1-31) from "today" co
 const currentMonth = today.getMonth(); //Get the current month (0-11) from "today" constant
 const currentYear = today.getFullYear(); //Get the current year from "today" constant
 const url = ""; //Hidden for security
+var hasID = false; //If the user submitted a username that has a connected id
+var outputServer; //Message to send to the server
+var outputUser; //Message to send to the user
 
 var eventDetailsObject = { //An object to store data about the event
   Name: "",
@@ -68,27 +71,35 @@ function form_submission(form) { //2
       switch (discordUsername) { //check some default usernames for better compatibility
         case "sandwichthepilot": //Nathan
           eventDetailsObject.Username = "776934045531504660";
+          hasID = true;
           break;
         case "zombieboy2010._77531": //Gavin
           eventDetailsObject.Username = "1137436970868539494";
+          hasID = true;
           break;
         case "traumatized_individual": //Seth
           eventDetailsObject.Username = "1357806417435820092";
+          hasID = true;
           break;
         case "rowlet0966": //Ben
           eventDetailsObject.Username = "1528859249609019544";
+          hasID = true;
           break;
         case "voyager9696": //Aiden
           eventDetailsObject.Username = "799440285926293534";
+          hasID = true;
           break;
         case "fieldmarshalluke_42402": //Luke
           eventDetailsObject.Username = "1235319817897246794";
+          hasID = true;
           break;
         case "dannyplayz_.": //Danny
           eventDetailsObject.Username = "1344875281894080642";
+          hasID = true;
           break;
         default:
           eventDetailsObject.Username = discordUsername;
+          hasID = false;
       }
     }
 
@@ -259,26 +270,41 @@ function upload_calendar(evntName, evntDescription, evntLocation, evntDate, key,
 }
 
 
-function build_string(eventObject) {
-  var output = `# ${eventObject.Name} \n**${eventObject.Description}** \nHosted on ${eventObject.Date} by <@${eventObject.Username}>`;
+function build_string(eventObject = eventDetailsObject) { //Create the messages about the event to send on discord
+  outputServer = `# ${eventObject.Name} \n**${eventObject.Description}** \nHosted on ${eventObject.Date} by <@${eventObject.Username}>`;
+  outputUser = `# ${eventObject.Name} \n**${eventObject.Description}** \nHosted on ${eventObject.Date} by you.`;
 
-  return output;
+  return;
 }
 
 
-function send_message(channel = "1539452822628597780", text = build_string(eventDetailsObject)) { //6
-  const payload = {
+function send_message(channel = "1539452822628597780") { //6
+  build_string();
+  let payload;
+  
+  if (hasID == true) {
+    payload = {
     "channelId": channel,
-    "content": text
-  };
-  console.log("2");
+    "userId": eventDetailsObject.Username,
+    "contentServer": outputServer,
+    "contentClient": outputUser
+    };
+  } else {
+    payload = {
+    "channelId": channel,
+    "userId": "776934045531504660",
+    "contentServer": outputServer,
+    "contentClient": outputUser
+    };
+  }
+
+  console.log(payload);
 
   const options = {
     "method": "post",
     "contentType": "application/json",
     "payload": JSON.stringify(payload)
   };
-  console.log("3");
 
   const response = UrlFetchApp.fetch(url, options);
   console.log(response.getContentText());
