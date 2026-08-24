@@ -12,6 +12,7 @@ var eventDetailsObject = { //An object to store data about the event
   Name: "",
   Description: "",
   Location: "",
+  Server: "",
   Date: "",
   Username: ""
 };
@@ -116,6 +117,11 @@ function form_submission(form) { //2
     //Location Section
     if (title === "Online or In-Person") {
       var eventLocationType = answer;
+    }
+
+    if (title === "Discord Server Id (Use the link above for common options)") {
+      var server = answer;
+      eventDetailsObject.Server = answer;
     }
 
     if (title === "Discord Chat Id (Use the link above for common options)") {
@@ -284,17 +290,25 @@ function send_message(channel = "1539452822628597780") { //6
   
   if (hasID == true) {
     payload = {
-    "channelId": channel,
-    "userId": eventDetailsObject.Username,
-    "contentServer": outputServer,
-    "contentClient": outputUser
+      "serverId": eventDetailsObject.Server,
+      "channelId": channel,
+      "userId": "776934045531504660",
+      "contentServer": outputServer,
+      "contentClient": outputUser,
+      "eventName": eventDetailsObject.Name,
+      "eventDescription": eventDetailsObject.Description,
+      "eventDate": eventDetailsObject.Date
     };
   } else {
     payload = {
-    "channelId": channel,
-    "userId": "776934045531504660",
-    "contentServer": outputServer,
-    "contentClient": outputUser
+      "serverId": eventDetailsObject.Server,
+      "channelId": channel,
+      "userId": "776934045531504660",
+      "contentServer": outputServer,
+      "contentClient": outputUser,
+      "eventName": eventDetailsObject.Name,
+      "eventDescription": eventDetailsObject.Description,
+      "eventDate": eventDetailsObject.Date
     };
   }
 
