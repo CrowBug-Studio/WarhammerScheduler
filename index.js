@@ -1,5 +1,15 @@
+const http = require("http"); //HTTP requirement
 const {Client, GatewayIntentBits, Partials} = require("discord.js"); //Get the requirements
 const axios = require("axios"); //Get the HTTP service
+
+//Create a HTTP server so Render stays on
+const PORT = process.env.PORT || 3000;
+http.createServer((req, res) => {
+    res.writeHead(200, {"Content-Type": "text/plain"});
+    res.end("Online");
+}).listen(PORT, () => {
+    console.log(`Server active on ${PORT}`);
+});
 
 const client = new Client({ 
     intents: [ //Get the specific discord permission
