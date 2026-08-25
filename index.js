@@ -53,6 +53,25 @@ client.on("messageReactionAdd", async (reaction, user) => { //When a reaction is
     }
 });
 
+//Remove after testing
+async function testDiscordConnection() {
+    console.log("Testing direct REST ping to Discord...");
+    try {
+        const response = await axios.get("https://discord.com/api/v10/gateway", {
+            headers: { Authorization: `Bot ${process.env.DISCORD_BOT_TOKEN}` }
+        });
+        console.log("Gateway URL fetched successfully:", response.data.url);
+    } catch (err) {
+        console.error("REST Ping Failed:", err.response ? `${err.response.status} ${err.response.statusText}` : err.message);
+    }
+}
+
+testDiscordConnection().then(() => {
+    client.login(process.env.DISCORD_BOT_TOKEN).catch((err) => {
+        console.error("Login error: ", err.message);
+    });
+});
+
 //Remove the 3 lines below this after testing
 client.on("debug", (info) => console.log(`[DEBUG] ${info}`));
 client.on("warn", (info) => console.warn(`[WARN] ${info}`));
