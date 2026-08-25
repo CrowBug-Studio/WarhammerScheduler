@@ -52,7 +52,8 @@ client.on("messageReactionAdd", async (reaction, user) => { //When a reaction is
     }
 });
 
-//Remove the 6 lines below this after testing
+//Remove the 7 lines below this after testing
+console.log(`Node: ${process.version}`);
 console.log("Checking environment variables...");
 console.log("Token length:", process.env.DISCORD_BOT_TOKEN ? process.env.DISCORD_BOT_TOKEN.length : "MISSING/UNDEFINED");
 console.log("Pipedream URL defined:", Boolean(process.env.PIPEDREAM_WEBHOOK_URL));
