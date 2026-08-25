@@ -18,7 +18,8 @@ const client = new Client({
         GatewayIntentBits.GuildMessages,
         GatewayIntentBits.MessageContent
     ],
-    partials: [Partials.Message, Partials.Channel, Partials.Reaction, Partials.User]
+    partials: [Partials.Message, Partials.Channel, Partials.Reaction, Partials.User],
+    rest: {timeout:15000}
 });
 
 client.on("ready", () => {
