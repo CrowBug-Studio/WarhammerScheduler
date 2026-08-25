@@ -22,7 +22,7 @@ const client = new Client({
     rest: {timeout:15000}
 });
 
-client.on("ready", () => {
+client.once("ready", () => {
     console.log(`Logged in as ${client.user.tag}`);
 });
 
@@ -53,11 +53,7 @@ client.on("messageReactionAdd", async (reaction, user) => { //When a reaction is
     }
 });
 
-//Remove the 7 lines below this after testing
-console.log(`Node: ${process.version}`);
-console.log("Checking environment variables...");
-console.log("Token length:", process.env.DISCORD_BOT_TOKEN ? process.env.DISCORD_BOT_TOKEN.length : "MISSING/UNDEFINED");
-console.log("Pipedream URL defined:", Boolean(process.env.PIPEDREAM_WEBHOOK_URL));
+//Remove the 3 lines below this after testing
 client.on("debug", (info) => console.log(`[DEBUG] ${info}`));
 client.on("warn", (info) => console.warn(`[WARN] ${info}`));
 client.on("error", (error) => console.error(`[ERROR]`, error));
