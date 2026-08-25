@@ -21,6 +21,10 @@ const client = new Client({
     partials: [Partials.Message, Partials.Channel, Partials.Reaction, Partials.User]
 });
 
+client.on("ready", () => {
+    console.log(`Logged in as ${client.user.tag}`);
+});
+
 client.on("messageReactionAdd", async (reaction, user) => { //When a reaction is added
     if (user.bot) return; //If the reaction is from a bot don't count it
 
