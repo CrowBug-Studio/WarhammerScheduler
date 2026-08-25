@@ -18,7 +18,7 @@ const client = new Client({
         GatewayIntentBits.GuildMessages,
         GatewayIntentBits.MessageContent
     ],
-    partials: [Partials.Message, Partials.Reaction, Partials.User]
+    partials: [Partials.Message, Partials.Channel, Partials.Reaction, Partials.User]
 });
 
 client.on("messageReactionAdd", async (reaction, user) => { //When a reaction is added
