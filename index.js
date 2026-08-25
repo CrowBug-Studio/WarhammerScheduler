@@ -16,21 +16,23 @@ const client = new Client({
         GatewayIntentBits.Guilds,
         GatewayIntentBits.GuildMessageReactions,
         GatewayIntentBits.GuildMessages,
+        GatewayIntentBits.MessageContent
     ],
-    partials: [Partials.Message, Partials.Reaction, Partials.User] //Allows for viewing new messages after the bot starts
+    partials: [Partials.Message, Partials.Reaction, Partials.User]
 });
 
 client.on("messageReactionAdd", async (reaction, user) => { //When a reaction is added
     if (user.bot) return; //If the reaction is from a bot don't count it
 
-    if (reaction.partial) { //Uncached data
-        try {
-            await reaction.fetch();
-        } catch (error) {
-            console.error("Failed to get message data", error);
-            return;
-        }
+    try {
+        if (reaction.partial) await reaction.fetch();
+        if (reaction.message.partial) await reaction.message.fetch();
+    } catch (error) {
+        console.error("Failed to get partial, ", error);
+        return;
     }
+
+    console.log(`Reaction from ${user.tag} on ${reaction.message.id}`);
 
     try { //Send the information to HTTP
         await axios.post(process.env.PIPEDREAM_WEBHOOK_URL, {
@@ -40,6 +42,7 @@ client.on("messageReactionAdd", async (reaction, user) => { //When a reaction is
             user_id: user.id,
             emoji: reaction.emoji.name
         });
+        console.log("Payload Sent")
     } catch (error) {
         console.error("HTTP Failed", error.message);
     }
