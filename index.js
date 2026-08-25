@@ -34,6 +34,7 @@ client.on("messageReactionAdd", async (reaction, user) => { //When a reaction is
 
     try { //Send the information to HTTP
         await axios.post(process.env.PIPEDREAM_WEBHOOK_URL, {
+            guild_id: reaction.message.guildId,
             channel_id: reaction.message.channelId,
             message_id: reaction.message.id,
             user_id: user.id,
