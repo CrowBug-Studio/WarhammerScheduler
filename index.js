@@ -48,6 +48,11 @@ client.on("messageReactionAdd", async (reaction, user) => { //When a reaction is
     }
 });
 
+//Remove the 3 lines below this after testing
+console.log("Checking environment variables...");
+console.log("Token length:", process.env.DISCORD_BOT_TOKEN ? process.env.DISCORD_BOT_TOKEN.length : "MISSING/UNDEFINED");
+console.log("Pipedream URL defined:", Boolean(process.env.PIPEDREAM_WEBHOOK_URL));
+
 client.login(process.env.DISCORD_BOT_TOKEN).catch((err) => {
     console.error("Login error: ", err.message);
 });
