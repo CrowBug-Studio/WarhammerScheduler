@@ -48,4 +48,6 @@ client.on("messageReactionAdd", async (reaction, user) => { //When a reaction is
     }
 });
 
-client.login(process.env.DISCORD_BOT_TOKEN);
+client.login(process.env.DISCORD_BOT_TOKEN).catch((err) => {
+    console.error("Login error: ", err.message);
+});
